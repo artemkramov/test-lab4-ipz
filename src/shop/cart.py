@@ -25,7 +25,12 @@ class Cart:
         if qty <= 0:
             raise ValueError("qty must be positive")
         if name in self._items:
-            self._items[name].qty += qty
+            existing = self._items[name]
+            if existing.price != price:
+                raise ValueError(
+                    f"price mismatch for {name!r}: {existing.price} already in cart, got {price}"
+                )
+            existing.qty += qty
         else:
             self._items[name] = Item(name, price, qty)
 
@@ -36,6 +41,11 @@ class Cart:
 
     def items_count(self) -> int:
         return sum(item.qty for item in self._items.values())
+
+    def most_expensive(self) -> Item | None:
+        if not self._items:
+            return None
+        return max(self._items.values(), key=lambda item: item.price)
 
     def total(self, discount_percent: float = 0) -> float:
         if not 0 <= discount_percent <= 100:
