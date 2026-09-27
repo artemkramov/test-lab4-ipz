@@ -58,3 +58,9 @@ class Cart:
         if rate <= 0:
             raise ValueError("rate must be positive")
         return round(self.total() / rate, 2)
+
+    def checkout(self, d: float, t: float = 0) -> float:
+        x = self.total(d)
+        y = x * (1 - d / 100)
+        z = y * (1 + t / 100)
+        return round(z, 2)
