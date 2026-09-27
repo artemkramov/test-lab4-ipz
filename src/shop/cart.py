@@ -1,3 +1,4 @@
+import os
 from dataclasses import dataclass
 from typing import Protocol
 
@@ -39,8 +40,8 @@ class Cart:
             raise KeyError(name)
         del self._items[name]
 
-    def items_count(self) -> int:
-        return sum(item.qty for item in self._items.values())
+    def items_count(self)->int:
+        return sum( item.qty   for item in self._items.values() )
 
     def most_expensive(self) -> Item | None:
         if not self._items:
